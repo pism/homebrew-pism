@@ -1,10 +1,9 @@
-# Ckhroulev Pism
+# Homebrew formulas for PISM and related software
 
 ## How do I install these formulae?
 
-`brew install ckhroulev/pism/<formula>`
-
-Or `brew tap ckhroulev/pism` and then `brew install <formula>`.
+Run `brew tap pism/pism` and then `brew install <formula>`, e.g. `brew
+install pism`.
 
 ## Documentation
 
