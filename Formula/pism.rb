@@ -11,7 +11,7 @@ class Pism < Formula
   depends_on "fftw"
   depends_on "gsl"
   depends_on "netcdf"
-  depends_on "open-mpi"         # the petsc formula uses open-mpi, so we have to use it too
+  depends_on "open-mpi"
   depends_on "petsc"
   depends_on "udunits"
   depends_on "pnetcdf" => :optional
@@ -34,18 +34,27 @@ class Pism < Formula
       s.gsub! prefix, opt_prefix
     end
 
+    # remove the non-executable script that should not have been
+    # installed in the first place
+    rm_f("#{bin}/convert_config.py")
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! For Homebrew/homebrew-core
-    # this will need to be a test that verifies the functionality of the
-    # software. Run the test with `brew test pism`. Options passed
-    # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "false"
+    # Run test G and compare reported errors
+    output = shell_output("#{bin}/pismv -test G -y 1000 -Mx 51 -My 51 -verbose 1 -o output.nc")
+
+    assert_predicate testpath/"output.nc", :exist?
+
+    geometry_errors = output.lines[2].strip.squeeze(" ")
+    assert_equal geometry_errors, "0.659590 26.185380 6.186086 0.013148"
+
+    temperature_errors = output.lines[4].strip.squeeze(" ")
+    assert_equal temperature_errors, "0.782424 0.220410 0.671583 0.138714"
+
+    sigma_errors = output.lines[6].strip.squeeze(" ")
+    assert_equal sigma_errors, "7.258858 0.890887"
+
+    surface_velocity_errors = output.lines[8].strip.squeeze(" ")
+    assert_equal surface_velocity_errors, "0.940931 0.193252 0.033099 0.004403"
   end
 end
