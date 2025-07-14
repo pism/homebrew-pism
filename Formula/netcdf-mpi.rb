@@ -1,5 +1,5 @@
 class NetcdfMpi < Formula
-  desc "Libraries and data formats for array-oriented scientific data (with parallel I/O)"
+  desc "Libraries and data formats for array-oriented scientific data (parallel I/O)"
   homepage "https://www.unidata.ucar.edu/software/netcdf/"
   url "https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.3.tar.gz"
   sha256 "990f46d49525d6ab5dc4249f8684c6deeaf54de6fec63a187e9fb382cc0ffdff"
@@ -25,7 +25,9 @@ class NetcdfMpi < Formula
   end
 
   def install
-    args = %w[-DNETCDF_ENABLE_TESTS=OFF -DNETCDF_ENABLE_NETCDF_4=ON -DNETCDF_ENABLE_DOXYGEN=OFF -DNETCDF_ENABLE_PARALLEL4=ON]
+    args = %w[-DNETCDF_ENABLE_TESTS=OFF -DNETCDF_ENABLE_NETCDF_4=ON
+              -DNETCDF_ENABLE_DOXYGEN=OFF -DNETCDF_ENABLE_PARALLEL4=ON]
+
     # Fixes "relocation R_X86_64_PC32 against symbol `stderr@@GLIBC_2.2.5' can not be used" on Linux
     args << "-DCMAKE_POSITION_INDEPENDENT_CODE=ON" if OS.linux?
 

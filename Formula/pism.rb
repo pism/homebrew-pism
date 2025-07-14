@@ -33,17 +33,13 @@ class Pism < Formula
     inreplace (lib/"pkgconfig").glob("*.pc") do |s|
       s.gsub! prefix, opt_prefix
     end
-
-    # remove the non-executable script that should not have been
-    # installed in the first place
-    rm_f("#{bin}/convert_config.py")
   end
 
   test do
     # Run test G and compare reported errors
     output = shell_output("#{bin}/pismv -test G -y 1000 -Mx 51 -My 51 -verbose 1 -o output.nc")
 
-    assert_predicate testpath/"output.nc", :exist?
+    assert_path_exists testpath/"output.nc"
 
     geometry_errors = output.lines[2].strip.squeeze(" ")
     assert_equal geometry_errors, "0.659590 26.185380 6.186086 0.013148"
