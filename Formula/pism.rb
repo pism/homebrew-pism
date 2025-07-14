@@ -1,8 +1,8 @@
 class Pism < Formula
   desc "Parallel Ice Sheet Model (PISM)"
   homepage "https://pism.io/"
-  url "https://github.com/pism/pism/archive/refs/tags/v2.1.tar.gz"
-  sha256 "9d7e9854b58180df58d38fdd3eaa993a1e247548dfe183a8753a3f15190b6aaa"
+  url "https://github.com/pism/pism/archive/refs/tags/v2.2.2.tar.gz"
+  sha256 "bbd64f767ced12bdc5667488a48021c1a96fbce8771489d4923317cdc16b5271"
   license "GPL-3.0-or-later"
   head "https://github.com/pism/pism.git", branch: "dev"
 
@@ -10,7 +10,7 @@ class Pism < Formula
   depends_on "pkg-config" => :build
   depends_on "fftw"
   depends_on "gsl"
-  depends_on "netcdf"
+  depends_on "netcdf-mpi"
   depends_on "open-mpi"
   depends_on "petsc"
   depends_on "udunits"
