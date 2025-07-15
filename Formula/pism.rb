@@ -13,10 +13,10 @@ class Pism < Formula
   depends_on "netcdf-mpi"
   depends_on "open-mpi"
   depends_on "petsc"
-  depends_on "udunits"
   depends_on "proj"
-  depends_on "yaxt"
+  depends_on "udunits"
   depends_on "yac"
+  depends_on "yaxt"
 
   def install
     args = %w[]
