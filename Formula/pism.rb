@@ -14,17 +14,19 @@ class Pism < Formula
   depends_on "open-mpi"
   depends_on "petsc"
   depends_on "udunits"
-  depends_on "pnetcdf" => :optional
-  depends_on "proj" => :optional
+  depends_on "proj"
+  depends_on "yaxt"
+  depends_on "yac"
 
   def install
     args = %w[]
 
-    args << "-DPism_USE_PROJ=YES" if build.with? "proj"
-    args << "-DPism_USE_PNETCDF=YES" if build.with? "pnetcdf"
-
-    ENV["CC"] = "mpicc"
-    ENV["CXX"] = "mpicxx"
+    args << "-DCMAKE_C_COMPILER=mpicc"
+    args << "-DCMAKE_CXX_COMPILER=mpicxx"
+    args << "-DUDUNITS2_ROOT=#{Formula["udunits"].opt_prefix}"
+    args << "-DPism_USE_PROJ=YES"
+    args << "-DPism_USE_YAC_INTERPOLATION=YES"
+    args << "-DPism_USE_PARALLEL_NETCDF4=YES"
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
     system "cmake", "--build", "build"
