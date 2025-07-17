@@ -8,12 +8,15 @@ class Pism < Formula
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "swig" => :build
   depends_on "fftw"
   depends_on "gsl"
   depends_on "netcdf-mpi"
   depends_on "open-mpi"
   depends_on "petsc"
+  depends_on "petsc4py"
   depends_on "proj"
+  depends_on "python@3.13"
   depends_on "udunits"
   depends_on "yac"
   depends_on "yaxt"
@@ -24,9 +27,11 @@ class Pism < Formula
     args << "-DCMAKE_C_COMPILER=mpicc"
     args << "-DCMAKE_CXX_COMPILER=mpicxx"
     args << "-DUDUNITS2_ROOT=#{Formula["udunits"].opt_prefix}"
+    args << "-DPython3_EXECUTABLE=#{Formula["python@3.13"].opt_prefix}/bin/python3"
     args << "-DPism_USE_PROJ=YES"
     args << "-DPism_USE_YAC_INTERPOLATION=YES"
     args << "-DPism_USE_PARALLEL_NETCDF4=YES"
+    args << "-DPism_BUILD_PYTHON_BINDINGS=YES"
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
     system "cmake", "--build", "build"
@@ -54,5 +59,18 @@ class Pism < Formula
 
     surface_velocity_errors = output.lines[8].strip.squeeze(" ")
     assert_equal surface_velocity_errors, "0.940931 0.193252 0.033099 0.004403"
+
+    (testpath/"test_pism.py").write <<~PY
+      import PISM
+      ctx = PISM.Context()
+      Lx = 1e5
+      Ly = Lx
+      Mx = 101
+      My = Mx
+      grid = PISM.Grid_Shallow(ctx.ctx, Lx, Ly, 0, 0, Mx, My, PISM.CELL_CORNER, PISM.NOT_PERIODIC)
+      grid.report_parameters()
+    PY
+
+    system "python3", "test_pism.py"
   end
 end
