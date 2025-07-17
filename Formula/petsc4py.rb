@@ -8,8 +8,8 @@ class Petsc4py < Formula
   depends_on "cython" => :build
   depends_on "python-setuptools" => :build
   depends_on "numpy"
-  depends_on "python@3.13"
   depends_on "petsc"
+  depends_on "python@3.13"
 
   def install
     ENV["PETSC_DIR"] = Formula["petsc"].prefix.realpath
