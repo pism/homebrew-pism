@@ -39,7 +39,7 @@ class Pism < Formula
 
   test do
     # Run test G and compare reported errors
-    output = shell_output("#{bin}/pismv -test G -y 1000 -Mx 51 -My 51 -verbose 1 -o output.nc")
+    output = shell_output("#{bin}/pism -test G -y 1000 -Mx 51 -My 51 -verbose 1 -o output.nc")
 
     assert_path_exists testpath/"output.nc"
 
