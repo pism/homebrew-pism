@@ -61,6 +61,7 @@ class Pism < Formula
     assert_equal surface_velocity_errors, "0.940931 0.193252 0.033099 0.004403"
 
     (testpath/"test_pism.py").write <<~PY
+      print("Testing Python bindings...")
       import PISM
       ctx = PISM.Context()
       Lx = 1e5
